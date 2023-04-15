@@ -24,7 +24,7 @@ def draw_region(image, center):
 def start_gui(title, size):
     gui = GUI(title, size)
 
-    gui_frame = gui.create_frame(600, 600, 'ne', 1, 0, 'green')
+    gui_frame = gui.create_frame(700, 700, 'ne', 1, 0, 'green')
     vid_label = Label(gui_frame)
     vid_label.grid()
     
@@ -83,6 +83,7 @@ def frame_video_stream(names, curr_char, prev_char, word, sentence, *args):
     
     # Flip the image horizontally for a later selfie-view display, and convert
     frame = cv2.flip(frame, 1)
+    frame = cv2.resize(frame, (700, 700))
     
     image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 

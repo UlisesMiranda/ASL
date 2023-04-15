@@ -7,7 +7,10 @@ class GUI:
     def __init__(self, title, size):
         self.root = Tk()
         self.root.title(title)
-        self.root.geometry(size)
+        # Obtiene las dimensiones de la pantalla
+        width = self.root.winfo_screenwidth()
+        height = self.root.winfo_screenheight()
+        self.root.geometry(f"{width}x{height}+0+0")
         self.root.configure(background='white')
 
     def create_frame(self, width, height, anchor, relx, rely, background='white'):

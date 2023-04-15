@@ -1,1 +1,1 @@
-anchor
+frame = cv2.resize(frame, (800, 800))
