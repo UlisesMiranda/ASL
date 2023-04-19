@@ -394,4 +394,4 @@ def iniciarInterfazHappyHand():
     window.resizable(False, False)
     window.mainloop()
     
-iniciarInterfazHappyHand()
+#iniciarInterfazHappyHand()
