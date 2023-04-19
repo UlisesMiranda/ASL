@@ -87,7 +87,7 @@ def frame_video_stream(names, curr_char, prev_char, word, sentence, *args):
     
     # Flip the image horizontally for a later selfie-view display, and convert
     frame = cv2.flip(frame, 1)
-    frame = cv2.resize(frame, (700, 700))
+    frame = cv2.resize(frame, (620, 560))
     
     image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
@@ -236,7 +236,7 @@ canvas.place(x = 0, y = 0)
 image_image_1 = PhotoImage(
     file=relative_to_assets("image_1.png"))
 
-gui_frame = create_frame(700, 700, 'ne', 1, 0, 'green')
+gui_frame = create_frame(650, 600, 'ne', 1, 0, 'green')
 vid_label = Label(gui_frame)
 vid_label.grid()
 
@@ -389,6 +389,9 @@ button_5.place(
     height=54.83740234375
 )
 
-pipe_cam(vid_label)
-window.resizable(False, False)
-window.mainloop()
+def iniciarInterfazHappyHand():
+    pipe_cam(vid_label)
+    window.resizable(False, False)
+    window.mainloop()
+    
+iniciarInterfazHappyHand()
