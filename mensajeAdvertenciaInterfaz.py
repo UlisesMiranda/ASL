@@ -82,9 +82,6 @@ for i in range(5, -1, -1):
         from interfaz import iniciarInterfazHappyHand
         iniciarInterfazHappyHand()
         
-    time.sleep(2)
-
-    
-
+    time.sleep(1)
 
 ventana.mainloop()
