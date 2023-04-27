@@ -89,7 +89,7 @@ def mostrar_toast(mensaje, x, y, borrarAutomatico: bool = True):
     )
     
     if borrarAutomatico == True:
-        toast.after(1500, toast.destroy) # Cierra la ventana después de 3 segundos
+        toast.after(1700, toast.destroy) # Cierra la ventana después de 3 segundos
 
 
 def draw_region(image, center):
@@ -121,7 +121,7 @@ def AddCharToWord(word, curr_char):
         temp_word = ""
     elif curr_char == 'del':
         temp_word = temp_word[0:-1]
-        mostrar_toast('character has been deleted', "750", "450")
+        mostrar_toast('El último caracter ha sido borrado', "750", "450")
         canvas.delete("palabra")
         canvas.create_text(
             860.0,
@@ -152,7 +152,7 @@ def frame_video_stream(names, curr_char, prev_char, word, *args):
     
     kwargs = dict(zip(names, args))
     
-    threshold = 0.98
+    threshold = 0.90
     curr_char = curr_char
     prev_char = prev_char
     
@@ -215,13 +215,15 @@ def frame_video_stream(names, curr_char, prev_char, word, *args):
                     
                     if (temp[0] == "") and (temp[1] != "del"):
                         corrected_word = Auto_Correct(word) 
-                        sentence += corrected_word + " "
+                        # sentence += corrected_word + " "
                         # kwargs['sent_box'].insert('end', corrected_word + " ")
                         # kwargs['ow_box'].delete('1.0', 'end')
                         # kwargs['cw_box'].delete('1.0', 'end')
                         # kwargs['cw_box'].insert('end', corrected_word)
-                        sent_entrybox.delete("1.0", "end")
-                        sent_entrybox.insert("1.0", sentence)
+                        # sent_entrybox.delete("1.0", "end")
+                        # sent_entrybox.insert("1.0", sentence)
+                        index = sent_entrybox.index(tk.INSERT)
+                        sent_entrybox.insert(index, corrected_word + " ")
                         
                         
                     word = temp[0]
@@ -245,7 +247,7 @@ def frame_video_stream(names, curr_char, prev_char, word, *args):
     kwargs['vid_label'].after(1, frame_video_stream, names, curr_char, prev_char, word, *args)
 
 
-def pipe_cam(vid_label):
+def pipe_cam(vid_label):   
     
     curr_char = None
     prev_char = None
@@ -289,6 +291,7 @@ def pipe_cam(vid_label):
             frame_video_stream(names, curr_char, prev_char, word, vid_label,
                                hands, sent_entrybox)
             
+            window.resizable(False, False)
             window.mainloop()
             
 
@@ -426,8 +429,25 @@ button_2 = Button(
     relief="flat"
 )
 button_2.place(
-    x=32.536590576171875,
-    y=264.11376953125,
+    x=30,
+    y=233,
+    width=48.658538818359375,
+    height=54.83740234375
+)
+
+# Borrar la ultima palabra
+button_image_6 = PhotoImage(
+    file=relative_to_assets("borrar ultima.png"))
+button_6 = Button(
+    image=button_image_6,
+    borderwidth=0,
+    highlightthickness=0,
+    command=lambda: eliminar_ultima_palabra(),
+    relief="flat"
+)
+button_6.place(
+    x=29.0,
+    y=315.0,
     width=48.658538818359375,
     height=54.83740234375
 )
@@ -444,7 +464,7 @@ button_3 = Button(
 )
 button_3.place(
     x=30.219512939453125,
-    y=343.6666259765625,
+    y=397,
     width=48.658538818359375,
     height=54.83740234375
 )
@@ -460,26 +480,68 @@ button_4 = Button(
 )
 button_4.place(
     x=30.99188232421875,
-    y=410.86181640625,
+    y=479,
     width=48.658538818359375,
     height=54.83740234375
 )
 
-button_image_5 = PhotoImage(
-    file=relative_to_assets("button_5.png"))
-button_5 = Button(
-    image=button_image_5,
-    borderwidth=0,
-    highlightthickness=0,
-    command=lambda: print("button_5 clicked"),
-    relief="flat"
+# button_image_5 = PhotoImage(
+#     file=relative_to_assets("button_5.png"))
+# button_5 = Button(
+#     image=button_image_5,
+#     borderwidth=0,
+#     highlightthickness=0,
+#     command=lambda: print("button_5 clicked"),
+#     relief="flat"
+# )
+# button_5.place(
+#     x=30.99188232421875,
+#     y=626.349609375,
+#     width=48.658538818359375,
+#     height=54.83740234375
+# )
+
+cargando = tk.Toplevel()
+cargando.geometry("300x100+600+250")
+cargando.title("Cargando")
+cargando.configure(bg = "#F5FDF8")
+canvasCar = Canvas(
+    cargando,
+    bg = "#F5FDF8",
+    height = 720,
+    width = 1138,
+    bd = 0,
+    highlightthickness = 0,
+    relief = "ridge"
 )
-button_5.place(
-    x=30.99188232421875,
-    y=626.349609375,
-    width=48.658538818359375,
-    height=54.83740234375
+canvasCar.place(x= 0, y= 0)
+
+canvasCar.create_rectangle(
+    0.0,
+    0.0,
+    300.0,
+    100.0,
+    fill="#FFFFFF",
+    outline="")
+
+canvasCar.create_rectangle(
+    8.0,
+    7.0,
+    18.0,
+    93.0,
+    fill="#4ECB71",
+    outline="")
+canvasCar.create_text(
+    85.0,
+    43.0,
+    anchor="nw",
+    text="Cargando...",
+    fill="#000000",
+    font=("Helvetica", 20 * -1, 'bold')
 )
+cargando.attributes("-topmost", True)
+canvasCar.update()
+cargando.after(4000, cargando.destroy)
 
 def copiar_texto():
     clipboard.copy(sent_entrybox.get("1.0", "end"))
@@ -490,21 +552,31 @@ def borrar_texto():
     global sentence
     sentence = ''
     mostrar_toast("Se ha eliminado el texto" , "370", "340")
-
-sentence = ''
-def iniciarInterfazHappyHand():
-    pipe_cam(vid_label)
-    window.resizable(False, False)
-    window.mainloop()
+    
+def eliminar_ultima_palabra():
+    contenido = sent_entrybox.get('1.0', 'end-1c')
+    palabras = contenido.split()
+    if palabras:
+        palabras.pop()
+        nuevo_contenido = " ".join(palabras)
+        sent_entrybox.delete('1.0', 'end')
+        sent_entrybox.insert('1.0', nuevo_contenido+" ")
+        mostrar_toast("Se elimino la ultima palabra", "370", "340")
     
 def textoVoz():
+    mostrar_toast("Reproduciendo audio...", "370", "340")
     NOMBRE_ARCHIVO = "sonido_generado.mp3"
-    # mostrar_toast("Reproduciendo audio...")
     tts = gTTS(sent_entrybox.get("1.0", "end"), lang='es-us')
     with open(NOMBRE_ARCHIVO, "wb") as archivo:
         tts.write_to_fp(archivo)
     
     playsound("D:\Documentos\ESCOM\VISION ARTIFICIAL\Rec_manos_lenguaje\ASL\\"+NOMBRE_ARCHIVO)
     remove("sonido_generado.mp3")
+
+sentence = ''
+def iniciarInterfazHappyHand():
+    pipe_cam(vid_label)
+    window.mainloop()
+    
     
 iniciarInterfazHappyHand()

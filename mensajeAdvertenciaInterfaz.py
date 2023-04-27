@@ -21,7 +21,7 @@ def relative_to_assets(path: str) -> Path:
 
 ventana = Tk()
 
-ventana.geometry("416x352")
+ventana.geometry("416x352+500+300")
 ventana.configure(bg = "#FFFFFF")
 
 
@@ -82,6 +82,6 @@ for i in range(5, -1, -1):
         from interfaz import iniciarInterfazHappyHand
         iniciarInterfazHappyHand()
         
-    time.sleep(1)
+    time.sleep(2)
 
 ventana.mainloop()
